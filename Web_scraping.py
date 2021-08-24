@@ -7,15 +7,6 @@ from typing import Union
 
 base_shinden_url = 'https://shinden.pl'
 
-url_series = 'https://shinden.pl/series/57630-seirei-gensouki'
-url_episode_list = 'https://shinden.pl/series/57630-seirei-gensouki/episodes'
-url_episode = 'https://shinden.pl/episode/57630-seirei-gensouki/view/202535'
-
-url_episode_list2 = 'https://shinden.pl/series/56421-isekai-maou-to-shoukan-shoujo-no-dorei-majutsu-omega/episodes'
-url_episode2 = 'https://shinden.pl/episode/56421-isekai-maou-to-shoukan-shoujo-no-dorei-majutsu-omega/view/200409'
-
-test_series_id = '57630-seirei-gensouki'
-
 
 def simple_get(url: str, cookies=None, headers=None) -> requests.Response:
     if not headers:
@@ -48,7 +39,7 @@ def get_episode_list(series_id: str) -> list[dict[str, str]]:
             'episode': columns[0].text,
             'title': columns[1].text,
             'online': columns[2].find().attrs['class'][2] == 'fa-check',
-            'languages': ', '.join(languages),
+            'langs  ': ', '.join(languages),
             'release_date': columns[4].text,
             'url': f"{base_shinden_url}{columns[5].find()['href']}"[len(base_shinden_url):]
         }
@@ -82,10 +73,10 @@ def get_player_list(series_id: str, episode_id: str) -> list[dict[str, Union[str
             'subs-fav-icon-url': subs_fav_icon,
             'subs-authors': subs_authors,
             'episode_number': episode_number,
-            **json.loads(columns[5].find('a').attrs['data-episode'])
         }
+        buf |= json.loads(columns[5].find('a').attrs['data-episode'])
+
         player_list.append(buf)
-    # print(player_list)
     return player_list
 
 
@@ -109,17 +100,7 @@ def get_player(player_id: str) -> str:
 
     iframe = BeautifulSoup(res.content, 'html.parser').find('iframe')
 
-    try:
-        iframe_url = iframe['src']
-        if iframe_url.startswith('//'):
-            iframe_url = 'https:' + iframe_url
-
-        return iframe_url
-    except TypeError:
-        return ''
-
-#
-# for player in get_episode(url_episode):
-#     src = get_player(player['data-episode']['online_id'])
-#     iframe_string = f'<iframe allowfullscreen="" frameborder="0" height="431" src="{src}" width="765"></iframe>'
-#     print(iframe_string)
+    if iframe:
+        return str(iframe)
+    else:
+        return '<div class="player-box not-found">Video player not found</div>'
