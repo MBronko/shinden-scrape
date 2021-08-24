@@ -19,19 +19,14 @@
         {% include 'series.html' %}
     {% endif %}
 
-
     <script>
         let base_shinden_url = 'https://shinden.pl/'
 
         document.getElementById('redirect-button').addEventListener('click', () => {
-            redirect_url = document.getElementById('redirect').value;
-    
+            let redirect_url = document.getElementById('redirect').value;
+
             if(redirect_url.startsWith(base_shinden_url)){
-                root_url = window.location.href.match(/^.*\//);
-
-                new_url = root_url + redirect_url.slice(base_shinden_url.length);
-
-                window.location.href = new_url;
+                window.location.href = location.origin + '/' + redirect_url.slice(base_shinden_url.length);
             }
             else{
                 document.getElementById('redirect-error').innerText = 'Invalid url';

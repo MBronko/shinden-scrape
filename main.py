@@ -32,13 +32,13 @@ def episodes(series_id):
 def episode(series_id, episode_id):
     series_info = get_series_info(series_id)
     episode_data = get_episode_list(series_id)
-    players_data = get_player_list(series_id, episode_id)
+    player_list = get_player_list(series_id, episode_id)
 
     kwargs = {
         'include_series_template': True,
         'series_info': series_info,
         'episode_list': episode_data,
-        'players_list': players_data
+        'player_list': player_list
     }
     return render_template('index.html', **kwargs)
 

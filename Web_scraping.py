@@ -33,7 +33,6 @@ def get_series_info(series_id: str):
 
 def get_episode_list(series_id: str) -> list[dict[str, str]]:
     url = f'{base_shinden_url}/series/{series_id}/episodes'
-    print(url)
 
     response = simple_get(url)
     body = BeautifulSoup(response.content, 'html.parser')
@@ -43,11 +42,13 @@ def get_episode_list(series_id: str) -> list[dict[str, str]]:
     for row in episode_table.find_all('tr'):
         columns = row.find_all('td')
 
+        languages = [span['title'] for span in columns[3].find_all()]
+
         buf = {
             'episode': columns[0].text,
             'title': columns[1].text,
             'online': columns[2].find().attrs['class'][2] == 'fa-check',
-            'lang': columns[3].text,  # todo
+            'languages': ', '.join(languages),
             'release_date': columns[4].text,
             'url': f"{base_shinden_url}{columns[5].find()['href']}"[len(base_shinden_url):]
         }
@@ -63,6 +64,8 @@ def get_player_list(series_id: str, episode_id: str) -> list[dict[str, Union[str
     body = BeautifulSoup(response.content, 'html.parser')
     player_table = body.find('div', class_='table-responsive').find('tbody')
 
+    episode_number = body.find('dl', class_='info-aside-list').find('dd').text
+
     player_list = []
     for row in player_table.find_all('tr'):
         columns: list[BeautifulSoup] = row.find_all('td')
@@ -73,15 +76,16 @@ def get_player_list(series_id: str, episode_id: str) -> list[dict[str, Union[str
             subs_authors = res_favicon.attrs['title']
         else:
             subs_fav_icon = ''
-            subs_authors = 'noname'
+            subs_authors = ''
 
         buf = {
             'subs-fav-icon-url': subs_fav_icon,
             'subs-authors': subs_authors,
-            'data-episode': json.loads(columns[5].find('a').attrs['data-episode'])
+            'episode_number': episode_number,
+            **json.loads(columns[5].find('a').attrs['data-episode'])
         }
         player_list.append(buf)
-    print(player_list)
+    # print(player_list)
     return player_list
 
 
@@ -113,9 +117,6 @@ def get_player(player_id: str) -> str:
         return iframe_url
     except TypeError:
         return ''
-
-
-print(get_episode_list(test_series_id))
 
 #
 # for player in get_episode(url_episode):
