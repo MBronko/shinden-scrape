@@ -1,0 +1,51 @@
+{% if series_info %}
+<div class='series-info'>
+    series info
+</div>
+{% endif %}
+<div class='episode-list'>
+    <table>
+        <thead>
+            <tr>
+                {% for key in episode_list[0].keys() if key != 'url' %}
+                    <th>
+                        {{ key }}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for episode in episode_list %}
+                <tr>
+                    {% for key, value in episode.items() if key != 'url' %}
+                        <th>
+                            {{ value }}
+                        </th>
+                    {% endfor %}
+                    <th>
+                        <a href={{ episode['url'] }}>
+                            <button>
+                                Show Episode
+                            </button>
+                        </a>
+                    </th>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+    </table>
+
+
+</div>
+<div class='player-list'>
+    <div>
+        episode number
+    </div>
+    <div>
+        player list
+    </div>
+</div>
+<div id='iframe'>
+    iframe
+</div>
