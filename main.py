@@ -1,7 +1,12 @@
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, Response, render_template, url_for, redirect
 from Web_scraping import *
 
 app = Flask(__name__)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return redirect(url_for('static', filename='favicon.ico'))
 
 
 @app.route('/')
@@ -50,8 +55,3 @@ def player(player_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-# http://127.0.0.1:5000/episode/54843-mushoku-tensei-isekai-ittara-honki-dasu/view/197808
-# http://127.0.0.1:5000/series/54843-mushoku-tensei-isekai-ittara-honki-dasu
-# http://127.0.0.1:5000/series/54843-mushoku-tensei-isekai-ittara-honki-dasu/episodes

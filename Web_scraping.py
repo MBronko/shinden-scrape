@@ -19,7 +19,34 @@ def simple_get(url: str, cookies=None, headers=None) -> requests.Response:
 
 
 def get_series_info(series_id: str):
-    return True  # todo
+    url = f'{base_shinden_url}/series/{series_id}'
+
+    res = simple_get(url)
+    container = BeautifulSoup(res.content, 'html.parser').find('div', class_='l-main-contantainer')
+
+    title = container.find('h1', class_='page-title').text
+    if title.startswith('Anime: '):
+        title = title[len('Anime: '):]
+
+    left_menu = container.find('aside', class_='info-aside aside-title')
+
+    rating_data = left_menu.find('div', class_='bd')
+
+    series_info = [a.text for a in left_menu.find('dl', class_='info-aside-list').find_all('dd')[:4]]
+
+    series_data = {
+        'title': title,
+        'desc': container.find('div', id='description').find().text,
+        'genres': [li.find().text for li in container.find('ul', class_='tags').find_all('li')],
+        'cover_img': base_shinden_url + left_menu.find('img', class_='info-aside-img')['src'],
+        'rating': f"{rating_data.find('span', class_='info-aside-rating-user').text}/10",
+        'votes': rating_data.find('span', class_='h6').text.split(' ')[0],
+        'anime_type': series_info[0],
+        'status': series_info[1],
+        'emission_date': series_info[2],
+        'episodes': series_info[3]
+    }
+    return series_data
 
 
 def get_episode_list(series_id: str) -> list[dict[str, str]]:

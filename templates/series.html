@@ -1,18 +1,36 @@
 {% if series_info %}
 <div class='series-info'>
-    series info
+    <div class='left-series-info'>
+        <img src="{{ series_info['cover_img'] }}" alt="">
+    </div>
+    <div class='right-series-info'>
+        <div class='title'>{{ series_info['title'] }}</div>
+        <div class='description'>{{ series_info['desc'] }}</div>
+        <div class="rating">Rating: {{ series_info['rating'] }}</div>
+        <div class="votes">{{ series_info['votes'] }} votes</div>
+        <div class="">Type: {{ series_info['anime_type'] }}</div>
+        <div class="">Status: {{ series_info['status'] }}</div>
+        <div class="">Emission date: {{ series_info['emission_date'] }}</div>
+        <div class="">Episodes: {{ series_info['episodes'] }}</div>
+        <div class="genres">
+            {% for tag in series_info['genres'] %}
+                <div>{{ tag }}</div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endif %}
+{% if episode_list %}
 <div class='episode-list'>
     <table>
         <thead>
         <tr>
-            <td>Episode</td>
-            <td>Title</td>
-            <td>Online</td>
-            <td>Languages</td>
-            <td>Release date</td>
-            <td>Show players</td>
+            <th>Episode</th>
+            <th>Title</th>
+            <th>Online</th>
+            <th>Languages</th>
+            <th>Release date</th>
+            <th>Show players</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +51,7 @@
     <table>
     </table>
 </div>
+{% endif %}
 {% if player_list %}
 <div class='player-list'>
     <div>
