@@ -1,0 +1,191 @@
+html{
+    height: 100%;
+}
+
+body{
+    background-color: rgb(48, 48, 48);
+    color: lightgray;
+    margin: 0;
+}
+
+a{
+    color: lightslategray;
+}
+
+button{
+    background-color: rgba(153, 153, 153, 0.507);
+    margin: 0;
+    border: none;
+    text-align: center;
+    color: white;
+}
+button:hover{
+    background-color: rgb(27, 24, 24);
+}
+input{
+    border: none;
+    margin: 0;
+    background-color: rgb(85, 85, 85);
+    color: white;
+}
+
+tr:nth-child(even){
+    background-color: rgb(75, 72, 72);
+}
+
+tbody>tr:hover{
+    background-color: rgb(36, 36, 36);
+}
+
+.center-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.center-div-hor{
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-evenly;
+}
+
+.flag-icon{
+    position: relative;
+    width: 21px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 1px;
+    border: 1px solid black;
+}
+
+.cell-times:before{
+    content:"\2A09";
+}
+
+.cell-check:before{
+    content:"\2713";
+}
+
+.flag-icon-pl{
+    background-image: url("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/flags/4x3/pl.svg");
+}
+
+.flag-icon-gb{
+    background-image: url("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/flags/4x3/gb.svg");
+}
+
+.left-column{
+    width: 50vw;
+    margin-left: 15px;
+    margin-right: 7px;
+}
+
+.right-column{
+    width: 50vw;
+    margin-right: 15px;
+    margin-left: 7px;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-wrap{
+    flex-wrap: wrap;
+}
+
+.center-text{
+    text-align: center;
+    align-items: center;
+}
+
+.tag{
+    background-color: rgba(56, 95, 201, 0.226);
+    border-radius: 10%;
+    border-color: rgba(0, 0, 0, 0.206);
+    border-width: 3px;
+    border-style: solid;
+    margin: 2px 4px 2px 0;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.title{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.description{
+    margin-bottom: 10px;
+}
+
+.info-item{
+    margin-bottom: 3px;
+}
+
+.cover-image{
+    margin-right: 10px;
+    width: 225px;
+    height: 318px;
+}
+
+.right-series-col{
+    margin-left: 10px;
+}
+
+.genres{
+    margin-bottom: 10px;
+}
+
+.float-left{
+    float: left;
+}
+
+.header{
+    margin: 10px 20px 20px 20px;
+}
+
+.footer{
+    margin-top: 30px;
+}
+
+.align-right{
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.search-input{
+    padding: 7px;
+}
+
+.search-button{
+    padding: 7px;
+}
+
+.redirect-error{
+    margin-right: 10px;
+    font-size: 20px;
+    color: rgb(196, 22, 22)
+}
+
+.iframe-box{
+    width: 765px;
+    height: 431px;
+    background-color: black;
+    z-index: 1;
+}
+
+.iframe-loading{
+    width: 50px;
+    height: 50px;
+    background-image: url(https://resources.humandx.org/static/img/loading_spinner.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+}

@@ -1,121 +1,63 @@
-{% if series_info %}
-<div class='series-info'>
-    <div class='left-series-info'>
-        <img src="{{ series_info['cover_img'] }}" alt="">
-    </div>
-    <div class='right-series-info'>
-        <div class='title'>{{ series_info['title'] }}</div>
-        <div class='description'>{{ series_info['desc'] }}</div>
-        <div class="rating">Rating: {{ series_info['rating'] }}</div>
-        <div class="votes">{{ series_info['votes'] }} votes</div>
-        <div class="">Type: {{ series_info['anime_type'] }}</div>
-        <div class="">Status: {{ series_info['status'] }}</div>
-        <div class="">Emission date: {{ series_info['emission_date'] }}</div>
-        <div class="">Episodes: {{ series_info['episodes'] }}</div>
-        <div class="genres">
-            {% for tag in series_info['genres'] %}
-                <div>{{ tag }}</div>
-            {% endfor %}
+<div class="flex-row">
+    <div class="left-column">
+        <h1 class="title">{{ series_info['title'] }}</h1>
+        <div class="flex-row">
+            <div class="cover-image">
+                <img src="{{ series_info['cover_img'] }}" alt="">
+            </div>
+            <div>
+                <div class="description">{{ series_info['desc'] }}</div>
+                <div class="flex-row flex-wrap genres">
+                    {% for tag in series_info['genres'] %}
+                        <div class="tag">{{ tag }}</div>
+                    {% endfor %}
+                </div>
+                <div class="flex-row">
+                    <div class="flex-col">
+                        <div class="">Rating: {{ series_info['rating'] }}/10</div>
+                        <div class="">Emission date: {{ series_info['emission_date'] }}</div>
+                        <div class="">Type: {{ series_info['anime_type'] }}</div>
+                    </div>
+                    <div class="flex-col right-series-col">
+                        <div class="">{{ series_info['votes'] }} votes</div>
+                        <div class="">Status: {{ series_info['status'] }}</div>
+                        <div class="">Episodes: {{ series_info['episodes'] }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-{% endif %}
-{% if episode_list %}
-<div class='episode-list'>
-    <table>
-        <thead>
-        <tr>
-            <th>Episode</th>
-            <th>Title</th>
-            <th>Online</th>
-            <th>Languages</th>
-            <th>Release date</th>
-            <th>Show players</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for episode in episode_list %}
-        <tr>
-            <td>{{ episode['episode'] }}</td>
-            <td>{{ episode['title'] }}</td>
-            <td>{{ episode['online'] }}</td>
-            <td>{{ episode['langs'] }}</td>
-            <td>{{ episode['release_date'] }}</td>
-            <td>
-                <a href={{ episode['url'] }}><button>Show</button></a>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <table>
-    </table>
-</div>
-{% endif %}
-{% if player_list %}
-<div class='player-list'>
-    <div>
-        Episode {{ player_list[0]['episode_number'] }}
-    </div>
-    <div id='iframe'></div>
-    <div>
+    <div class="right-column center-div">
         <table>
             <thead>
-            <tr>
-                <th>Player</th>
-                <th>Subs authors</th>
-                <th>Resolution</th>
-                <th>Audio</th>
-                <th>Subs</th>
-                <th>Added</th>
-                <th>Watch</th>
-            </tr>
+                <tr>
+                    <th>Ep.</th>
+                    <th>Title</th>
+                    <th>Online</th>
+                    <th>Langs</th>
+                    <th>Release date</th>
+                </tr>
             </thead>
             <tbody>
-            {% for player in player_list %}
-                <tr>
-                    <td>{{ player['player'] }}</td>
-                    <td>
-                        {% if player['subs-fav-icon-url'] %}
-                            <img src="{{ player['subs-fav-icon-url'] }}" height="20" width="20" alt="">
-                        {% endif %}
-                        {{ player['subs-authors'] }}
-                    </td>
-                    <td>{{ player['max_res'] }}</td>
-                    <td>{{ player['lang_audio'] }}</td>
-                    <td>{{ player['lang_subs'] }}</td>
-                    <td>{{ player['added'] }}</td>
-                    <td><button id='{{ player['online_id'] }}' onclick='request_player(this.id)'>Show</button></td>
-                </tr>
-            {% endfor %}
+                {% for episode in episode_list %}
+                    <tr>
+                        <td>{{ episode['episode'] }}</td>
+                        <td>{{ episode['title'] }}</td>
+                        <td class="center-text {{ episode['online'] }}"></td>
+                        <td>
+                            <div class="center-div flex-row">
+                                {% for lang in episode['langs'] %}
+                                    <div class="{{ lang }}"></div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="center-text">{{ episode['release_date'] }}</td>
+                        <td><a href="{{ episode['url'] }}"><button>Show</button></a></td>
+                    </tr>
+                {% endfor %}
             </tbody>
+        </table>
+        <table>
         </table>
     </div>
 </div>
-
-<script>
-    let iframe = document.getElementById('iframe')
-    function show_player(iframe_data){
-        iframe.innerHTML = iframe_data
-        console.log(iframe_data)
-    }
-
-    function request_player(player_id) {
-        iframe.innerHTML = '<div class="player-box loading-player">Loading</div>'
-
-        let xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function () {
-            if (xmlHttp.readyState === 4){
-                if (xmlHttp.status === 200){
-                    show_player(xmlHttp.responseText);
-                }
-                else {
-                    iframe.innerHTML = '<div class="player-box error">An unexpected error occured</div>';
-                }
-            }
-        }
-        xmlHttp.open("GET", location.origin + '/player/' + player_id, true);
-        xmlHttp.send(null);
-    }
-</script>
-{% endif %}

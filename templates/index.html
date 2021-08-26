@@ -1,44 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
     <title>Amino</title>
 </head>
 <body>
-    <div class='header'>
-        <div>
-        <input type="text" id='redirect' placeholder="input shinden url">
-        <button id='redirect-button'>redirect</button>
-        </div>
-        <div class="error" id='redirect-error'></div>
+<div class="header flex-row">
+    <div>
+        <input class="search-input" type="text" id="search" placeholder="Search for title">
+        <button class="search-button" id="search-button">Search</button>
     </div>
-
-    {% if include_series_template %}
-        {% include 'series.html' %}
-    {% endif %}
-
-    <div class='footer'>
-        <a id='redirect-to-shinden'>View in shinden</a>
+    <div class="align-right flex-row">
+        <div class="redirect-error" id="redirect-error"></div>
+        <input class="search-input" type="text" id="redirect" placeholder="Input shinden url">
+        <button class="search-button" id="redirect-button">Redirect</button>
     </div>
-
-    <script>
-        let base_shinden_url = 'https://shinden.pl'
-
-        document.getElementById('redirect-to-shinden').href = base_shinden_url + location.pathname;
-
-        document.getElementById('redirect-button').addEventListener('click', () => {
-            let redirect_url = document.getElementById('redirect').value;
-
-            if(redirect_url.startsWith(base_shinden_url)){
-                window.location.href = location.origin + redirect_url.slice(base_shinden_url.length);
-            }
-            else{
-                document.getElementById('redirect-error').innerText = 'Invalid url';
-            }
-        });
-
-    </script>
-</body>
-</html>
+</div>
+{% if series_info %}
+    {% include 'series.html' %}
+{% endif %}
+{% if player_list %}
+    {% include 'players.html' %}
+{% endif %}
+<div class="footer center-div-hor">
+    <a id="redirect-to-shinden" href="https://shinden.pl/episode/45140-new-game/view/141025">Open in shinden</a>
+</div>
+<script src="/static/redirect-form.js"></script>
+</body></html>

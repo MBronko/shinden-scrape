@@ -1,0 +1,45 @@
+<div>
+    <h2 class="center-text">Episode {{ player_list[0]['episode_number'] }}</h2>
+
+    <div class="flex-row">
+        <div class="center-div-hor left-column">
+            <div id="iframe" class="iframe-box center-div"></div>
+        </div>
+        <div class="center-div-hor right-column">
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Subs authors</th>
+                        <th>Resolution</th>
+                        <th>Audio</th>
+                        <th>Subs</th>
+                        <th>Added</th>
+                        <th>Watch</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in player_list %}
+                            <tr>
+                                <td>{{ player['player'] }}</td>
+                                <td>
+                                    {% if player['subs-fav-icon-url'] %}
+                                        <img src="{{ player['subs-fav-icon-url'] }}" height="20" width="20" alt="">
+                                    {% endif %}
+                                    {{ player['subs-authors'] }}
+                                </td>
+                                <td>{{ player['max_res'] }}</td>
+                                <td>{{ player['lang_audio'] }}</td>
+                                <td>{{ player['lang_subs'] }}</td>
+                                <td>{{ player['added'] }}</td>
+                                <td class="center-div-hor"><button id="{{ player['online_id'] }}" onclick="request_player(this.id)">Show</button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/iframe-load.js"></script>

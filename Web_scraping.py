@@ -32,7 +32,12 @@ def get_series_info(series_id: str):
 
     rating_data = left_menu.find('div', class_='bd')
 
-    series_info = [a.text for a in left_menu.find('dl', class_='info-aside-list').find_all('dd')[:4]]
+    series_info = [a.text for a in left_menu.find('dl', class_='info-aside-list').find_all('dd')[:5]]
+
+    try:
+        episodes = int(series_info[3])
+    except ValueError:
+        episodes = series_info[4]
 
     series_data = {
         'title': title,
@@ -44,7 +49,7 @@ def get_series_info(series_id: str):
         'anime_type': series_info[0],
         'status': series_info[1],
         'emission_date': series_info[2],
-        'episodes': series_info[3]
+        'episodes': episodes
     }
     return series_data
 
@@ -60,18 +65,19 @@ def get_episode_list(series_id: str) -> list[dict[str, str]]:
     for row in episode_table.find_all('tr'):
         columns = row.find_all('td')
 
-        languages = [span['title'] for span in columns[3].find_all()]
+        languages = [span.attrs['class'] for span in columns[3].find_all()]
 
         buf = {
             'episode': columns[0].text,
             'title': columns[1].text,
-            'online': columns[2].find().attrs['class'][2] == 'fa-check',
-            'langs  ': ', '.join(languages),
+            'online': 'cell-check' if columns[2].find().attrs['class'][2] == 'fa-check' else 'cell-times',
+            'langs': [' '.join(classes) for classes in languages],
             'release_date': columns[4].text,
             'url': f"{base_shinden_url}{columns[5].find()['href']}"[len(base_shinden_url):]
         }
         episode_list.append(buf)
 
+    print(episode_list)
     return episode_list
 
 
@@ -130,4 +136,4 @@ def get_player(player_id: str) -> str:
     if iframe:
         return str(iframe)
     else:
-        return '<div class="player-box not-found">Video player not found</div>'
+        return 'Video player not found'
