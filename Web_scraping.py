@@ -54,7 +54,7 @@ def get_series_info(series_id: str):
     return series_data
 
 
-def get_episode_list(series_id: str) -> list[dict[str, str]]:
+def get_episode_list(series_id: str):
     url = f'{base_shinden_url}/series/{series_id}/episodes'
 
     response = simple_get(url)
@@ -76,12 +76,10 @@ def get_episode_list(series_id: str) -> list[dict[str, str]]:
             'url': f"{base_shinden_url}{columns[5].find()['href']}"[len(base_shinden_url):]
         }
         episode_list.append(buf)
-
-    print(episode_list)
     return episode_list
 
 
-def get_player_list(series_id: str, episode_id: str) -> list[dict[str, Union[str, dict[str, str]]]]:
+def get_player_list(series_id: str, episode_id: str):
     url = f'{base_shinden_url}/episode/{series_id}/view/{episode_id}'
     response = simple_get(url)
 
@@ -106,8 +104,8 @@ def get_player_list(series_id: str, episode_id: str) -> list[dict[str, Union[str
             'subs-fav-icon-url': subs_fav_icon,
             'subs-authors': subs_authors,
             'episode_number': episode_number,
+            **json.loads(columns[5].find('a').attrs['data-episode'])
         }
-        buf |= json.loads(columns[5].find('a').attrs['data-episode'])
 
         player_list.append(buf)
     return player_list
