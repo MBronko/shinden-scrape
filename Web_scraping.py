@@ -114,17 +114,16 @@ def get_player_list(series_id: str, episode_id: str):
 def get_player(player_id: str) -> str:
     auth = 'X2d1ZXN0XzowLDUsMjEwMDAwMDAsMjU1LDQxNzQyOTM2NDQ%3D'
 
-    cookie = {
-        "api.shinden": "s:ibHWJQMP1Xuf0iuR6qqaYOlE-_IliWzv.RwDfx0R2PmOu5Mso4S1VHksxEzmZNv2cmuhUYctoSck"
-    }
-
     shinden_api_url = 'https://api4.shinden.pl/xhr'
 
     load_iframe_url = f'{shinden_api_url}/{player_id}/player_load?auth={auth}'
     show_iframe_url = f'{shinden_api_url}/{player_id}/player_show?auth={auth}&width=765&height=-1'
 
-    load = simple_get(load_iframe_url, cookies=cookie)
+    load = simple_get(load_iframe_url)
 
+    cookie = {
+        'api.shinden': load.cookies['api.shinden']
+    }
     time.sleep(5)
 
     res = simple_get(show_iframe_url, cookies=cookie)
